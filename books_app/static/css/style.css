@@ -19,3 +19,24 @@ body {
     color: red;
     margin-left: 300px;
 }
+
+.container {
+    width: 1100px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 3px solid black;
+}
+
+.italicize {
+    font-style: italic;
+}
+
+.card {
+    padding: 5px;
+}

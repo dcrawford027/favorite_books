@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite Books</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1>Welcome, {{ user.first_name }}</h1>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div class="form-container">
+            <h1>Add a Favorite Book</h1>
+            <form action="/add_book" method="POST">
+                {% csrf_token %}
+                <p>
+                    Title
+                    <input type="text" name="title">
+                </p>
+                <p>
+                    Description
+                    <textarea name="desc" cols="30" rows="10"></textarea>
+                </p>
+                <button class="btn-login" type="submit">Add</button>
+            </form>
+        </div>
+        <div class="form-container">
+            <h1>All Books</h1>
+            {% for book in books %}
+                <div class="card">
+                    <a href="">{{ book.title }}</a>
+                    <p>(added by {{ book.uploaded_by_id.first.first_name }} {{ book.uploaded_by_id.first.last_name }})</p>
+                    {% for like in book.users_who_like.all %}
+                        {% if user.id == like.id %}
+                            <p class="italicize">this is one of your favorites</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            {% if messages %}
+                <ul class="messages">    
+                    {% for message in messages %}    
+                        <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>    
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

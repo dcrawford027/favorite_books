@@ -42,6 +42,16 @@ class User(models.Model):
 
     objects = UserManager()
 
+class BookManager(models.Manager):
+    def add_book_validator(self, postData):
+        errors = {}
+        if len(postData['title']) < 1:
+            errors['title'] = "A title is required."
+        if len(postData['desc']) < 5:
+            errors['desc'] = "Description must be at least 5 chars."
+        return errors
+
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
     desc = models.TextField()
@@ -50,3 +60,6 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     uploaded_by_id = models.ManyToManyField(User, related_name="books_uploaded")
+    users_who_like = models.ManyToManyField(User, related_name="liked_books")
+
+    objects = BookManager()
