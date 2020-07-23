@@ -34,13 +34,11 @@
                 <div class="card">
                     <a href="/books/{{ book.id }}">{{ book.title }}</a>
                     <p>(added by {{ book.uploaded_by_id.first.first_name }} {{ book.uploaded_by_id.first.last_name }})</p>
-                    {% for like in book.users_who_like.all %}
-                        {% if user.id == like.id %}
-                            <p class="italicize">this is one of your favorites</p>
-                        {% else %}
-                            <a href="/like_book/{{ book.id }}">Add to Favorites</a>
-                        {% endif %}
-                    {% endfor %}
+                    {% if user in book.users_who_like.all %}
+                        <p class="italicize">this is one of your favorites</p>
+                    {% else %}
+                        <a href="/like_book/{{ book.id }}">Add to Favorites</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

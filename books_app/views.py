@@ -84,13 +84,25 @@ def showBook(request, book_id):
 
 def updateBook(request):
     book = Book.objects.get(id=request.POST['book_id'])
-    book.title = request.POST['title']
-    book.desc = request.POST['desc']
-    book.save()
-    return redirect('/books')
+    errors = Book.objects.add_book_validator(request.POST)
+    if len(errors) > 0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/books/' + str(book.id))
+    else:
+        book.title = request.POST['title']
+        book.desc = request.POST['desc']
+        book.save()
+        return redirect('/books')
 
 
 def deleteBook(request):
     book = Book.objects.get(id=request.POST['book_id'])
     book.delete()
+    return redirect('/books')
+
+def removeFavorite(request, book_id):
+    book = Book.objects.get(id=book_id)
+    user = User.objects.get(id=request.session['user_id'])
+    book.users_who_like.remove(user)
     return redirect('/books')

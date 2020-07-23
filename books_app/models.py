@@ -51,7 +51,6 @@ class BookManager(models.Manager):
             errors['desc'] = "Description must be at least 5 chars."
         return errors
 
-
 class Book(models.Model):
     title = models.CharField(max_length=255)
     desc = models.TextField()
