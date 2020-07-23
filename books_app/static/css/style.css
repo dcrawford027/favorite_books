@@ -39,4 +39,20 @@ body {
 
 .card {
     padding: 5px;
+    margin-bottom: 25px;
+}
+
+.btn-white {
+    background-color: white;
+    box-shadow: 2px 2px grey;
+}
+
+.btn-delete {
+    background-color: red;
+    color: white;
+    box-shadow: 2px 2px grey;
+}
+
+button:hover {
+    cursor: pointer;
 }

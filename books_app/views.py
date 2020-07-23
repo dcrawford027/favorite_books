@@ -66,3 +66,31 @@ def addBook(request):
 def logout(request):
     request.session.clear()
     return redirect('/')
+
+def likeBook(request, book_id):
+    user = User.objects.get(id=request.session['user_id'])
+    book = Book.objects.get(id=book_id)
+    user.liked_books.add(book)
+    return redirect('/books')
+
+def showBook(request, book_id):
+    book = Book.objects.get(id=book_id)
+    user = User.objects.get(id=request.session['user_id'])
+    context = {
+        'book': book,
+        'user': user,
+    }
+    return render(request, 'show_book.html', context)
+
+def updateBook(request):
+    book = Book.objects.get(id=request.POST['book_id'])
+    book.title = request.POST['title']
+    book.desc = request.POST['desc']
+    book.save()
+    return redirect('/books')
+
+
+def deleteBook(request):
+    book = Book.objects.get(id=request.POST['book_id'])
+    book.delete()
+    return redirect('/books')

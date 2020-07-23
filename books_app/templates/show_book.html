@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ book.title }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <h1>Welcome, {{ user.first_name }}</h1>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div class="form-container">
+            <form action="/update_book" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <input type="text" name="title" value="{{ book.title }}">
+                <p>Added by: {{ book.uploaded_by_id.first.first_name }} {{ book.uploaded_by_id.first.last_name }}</p>
+                <p>Added on: {{ book.created_at }}</p>
+                <p>Last updated on: {{ book.updated_at }}</p>
+                <p>Description:</p>
+                <textarea name="desc" cols="40" rows="10">{{ book.desc }}</textarea>
+                <button class="btn-white" type="submit">Update</button>
+            </form> 
+            <form action="/delete_book" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="book_id" value="{{ book.id }}">
+                <button class="btn-delete" type="submit">Delete</button>
+            </form>
+        </div>
+        <div class="form-container">
+            <h2>Users Who Like This Book:</h1>
+            <ul>
+                {% for like in book.users_who_like.all %}
+                    <li>
+                        {{ like.first_name }} {{ like.last_name }}
+                        {% if user.id == like.id %}
+                            <a href="books/{{ book.id }}/remove_favorite">Un-Favorite</a>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
