@@ -8,3 +8,14 @@ body {
     width: 400px;
 }
 
+.btn-login {
+    background-color: green;
+    color: white;
+    border-radius: 5px;
+    box-shadow: 2px 2px grey;
+}
+
+.error {
+    color: red;
+    margin-left: 300px;
+}
